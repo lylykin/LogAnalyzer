@@ -14,6 +14,12 @@ class TopTen : public Stats
 {
     public:
         //méthodes publiques
+        void printTopTen() const;
+        //affiche dans la console le top 10 des liens les plus visités
+
+        void printAllLinks() const;
+        //affiche tout le dictionnaire contenant les liens
+
         void interpret(Parser::LogLine const &);
         //interprète la ligne
         // rajoute dans le dictionnaire dAllLinks le lien (la clé) avec 1 comme élément
@@ -22,12 +28,12 @@ class TopTen : public Stats
         std::string findTopOneLink();
         //renvoie le lien le plus visité du map dAllLinks
 
-        std::vector<std::string>& findTopTenLinks();
+        std::vector<std::vector<std::string>>& findTopTenLinks();
         //met les 10 liens les plus visités en ordre dans le vecteur theTopTen
         // il se base sur les liens du dictionnaire dAllLinks
         // Les liens sont triés en ordre croissant d'indice dans le vecteur
 
-        TopTen() : Stats() {}
+        TopTen();
         //constructeur par défaut
 
         ~TopTen(){}
