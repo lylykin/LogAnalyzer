@@ -1,44 +1,66 @@
 #include "affichage.hpp"
-#include <iostream>
+#include "topten.hpp"
+#include "graph.hpp"
 
-void parse_parameter(int argc, const char** argv)
+ProgArgument parse_parameter(int argc, const char **argv)
 {
-    // cas possible :
-    //  si argc = 1 : erreur, géré par user_choice
-    switch (argc)
+    // prendre les options
+    //  tant que pas arrivés au dernier (avec argc)
+    //  case switch en fonction des options
+
+    ProgArgument args;
+
+    int params = 1;
+    while (params < argc)
     {
-    case 0:
-        std::cerr << "Aucun fichier sélectionné";
-    case 1:
-        if (is_option(argv[1])) // jsp ce qui lui plait pas la
+
+        if (is_option(argv[params]))
         {
-            std::cerr << "Aucun fichier sélectionné";
+            if (argv[params][1] == 'e')
+            {
+                args.exclude_document = true;
+            }
+            else if (argv[params][1] == 'g')
+            {
+                args.gen_graph = true;
+                args.graph_outfile = argv[params+1];
+                //args.graph_outfile.assign(argv[params + 1], strlen(argv[params + 1]));
+                params++;
+            }
+            else if (argv[params][1] == 't')
+            {
+                args.time_selection = std::atoi(argv[params + 1]);
+                //args.time_selection.assign(argv[params + 1], strlen(argv[params + 1]));
+                params++;
+            }
         }
-        else
-        {
-            // cas par défaut ou on a pas défini d'option : topten
+        else // comme ce n'est pas une option et que les paramètres des options sont gérés dans l'autre cas, c'est forcément le fichier source de logs
+        {    // si params = 1 => cas par défaut
+            args.log_path = argv[params];
+            // pathLogs.assign(argv[params], strlen(argv[params]));
         }
-        break;
-    case 2:
-    {
-        // c'est le cas le plus chiant car il y a plein de possibilités. bref voir tablette
-        break;
+        params++;
     }
-    case 3:
-    {
-        if (is_option(argv[1]))
-        {
-            // youpi c'est bon : appeler de quoi faire
-            break;
-        }
-    }
-    default:
-    {
-        std::cerr << "Saisie incorrecte des options et/ou fichier";
-    }
-    }
+
+    return args;
 }
 
 bool is_option(const char *arg) { return (arg[0] == '-'); }
 
-
+void option_interpreter(ProgArgument &optn)
+{
+    if (!(optn.gen_graph) && !(optn.has_dump))
+    {
+        // cas par défaut : topten
+        TopTen top;
+        top.interpret_file(optn.log_path,optn.exclude_document, optn.time_selection);
+        top.findTopTenLinks();
+        top.printTopTen();
+    }
+    else
+    {
+        Graph graph;
+        graph.interpret_file(optn.log_path, optn.exclude_document, optn.time_selection);
+        graph.graphiz(optn.graph_outfile);
+    }
+}

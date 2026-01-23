@@ -16,10 +16,9 @@ CFLAGS_WARNS ?= 	\
 		-Wvla
 
 CXXFLAGS = 			\
-		-O2 		\
+		-Og 		\
 		-g 		 	\
 		-std=c++17 	\
-		--analyzer 	\
 		-Isrc/      \
 		$(CFLAGS_WARNS)
 

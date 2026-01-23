@@ -4,6 +4,7 @@
 #include <istream>
 #include <stdint.h>
 #include <string>
+#include <optional>
 // Par exemple:
 /*
  * 192.168.0.0 - - [08/Sep/2012:11:16:02 +0200] "GET /temps/4IF16.html HTTP/1.1"
@@ -18,58 +19,69 @@
  * Firefox/14.0.1"
  */
 
-class Parser {
+
+
+class Parser
+{
 public:
-  struct LogLine {
-    uint8_t ip[4];
-    std::time_t time;
+    struct LogLine
+    {
 
-    // soit request == "GET"
-    // - du coup c'est une requête, infos dans .get
-    // soit request == "ERROR"
-    // - donne une erreur, infos dans .error
-    // soit request == "INCOMPLETE"
-    // - il y a eu une erreur dans le parsing, la structure est pas complète
-    // soit request == "POST"/"UPDATE"/...
-    // - pas encore supporté
+        std::string raw_line; // ligne brute complète
+        int ip[4];
+        std::tm time;
 
-    std::string request;
+        // soit request == "GET"
+        // - du coup c'est une requête, infos dans .get
+        // soit request == "ERROR"
+        // - donne une erreur, infos dans .error
+        // soit request == "POST"/"UPDATE"/...
+        // - pas encore supporté
 
-    struct {
-      std::string source;
-      std::string target;
-      std::string user_agent; // le string contenant le reste
-    } get;
+        std::string request;
 
-    struct {
-      int error_code;
-    } error;
-  };
+        std::string source;
+        std::string target;
+        std::string user_agent; // le string contenant le reste
+    };
 
-  Parser(std::istream &stream) : _stream(stream) {
-    _stream.seekg(std::ios_base::beg);
-  };
 
-  LogLine getLine();
+
+    Parser(std::istream &stream, bool exclude_documents, std::optional<int> certain_hours) :
+        excludeDocuments(exclude_documents),
+        certainHours(certain_hours),
+        _stream(stream)
+    {
+        _stream.seekg(std::ios_base::beg);
+    };
+
+    std::optional<LogLine> getLine();
 
 private:
-  bool parseIp(LogLine &element);
-  bool parseDate(LogLine &element);
-  bool parseRequest(LogLine & element);
-  bool parseGetRequest(LogLine& element);
-  bool parseErrorRequest(LogLine& element);
+    bool excludeDocuments;
+    std::optional<int> certainHours;
+
+    bool parseIp(LogLine &element);
+    bool parseDate(LogLine &element);
+    bool parseRequest(LogLine &element);
+    bool parseGetRequest(LogLine &element);
+    bool parseErrorRequest(LogLine &element);
+
+    std::string skipUrl();
 
 
-  // "hello world".skipUntilAfter('o') => hello
-  std::string skipUntilAfter(char v);
+    int parseInt();
 
-  // "hello world".skipUntil('o') => hell
-  std::string skipUntil(char v);
+    // "hello world".skipUntilAfter('o') => hello
+    std::string skipUntilAfter(char v);
 
-  bool skip(char l);
-  bool skip(std::string const& l);
+    // "hello world".skipUntil('o') => hell
+    std::string skipUntil(char v);
 
-  std::istream &_stream;
+    bool skip(char l);
+    bool skip(std::string const &l);
+
+    std::istream &_stream;
 };
 
 #endif

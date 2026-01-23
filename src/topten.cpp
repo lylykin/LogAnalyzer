@@ -6,20 +6,15 @@
 #include "topten.hpp"
 #include "parser.hpp"
 
-using dict = std::map<std::string, int>;
-
 void TopTen::printTopTen() const
 {
-    int i = 1;
-    for (const std::vector<std::string>& linksVect : theTopTen)
+    for (const std::vector<pairSi>& linksVect : theTopTen)
     {
-        std::cout << i << ")" << std::endl;
-        for (const std::string& link : linksVect)
+        for (const pairSi& aPair : linksVect)
         {
-            std::cout << link << std::endl;
+            std::cout << aPair.first << "( " << aPair.second  << " hits)" << std::endl;
+            i++;
         }
-        std::cout << std::endl;
-        i++;
     }
 }
 
@@ -33,11 +28,11 @@ void TopTen::printAllLinks() const
 
 void TopTen::interpret(Parser::LogLine const & line)
 {
-    std::string target(line.get.target);
+    std::string target(line.target);
     dict::iterator it = dAllLinks.find(target);
     if (it == dAllLinks.end())
     {
-        dAllLinks.insert(std::pair<std::string, int>(target, 1));
+        dAllLinks.insert(pairSi(target, 1));
     }
     else
     {
@@ -60,28 +55,31 @@ std::string TopTen::findTopOneLink()
     return topLink;
 }
 
-std::vector<std::vector<std::string>>& TopTen::findTopTenLinks()
+tabLinks& TopTen::findTopTenLinks()
 {
     std::string currentTopLink;
-    std::vector<std::vector<std::string>>::iterator vectIt;
     dict::iterator dIt;
+    pairSi aPair;
     int numberLinks = 0;
     int lastValueAdded = 0;
     int i = 0;
-    while (numberLinks < 10)
+    while (numberLinks < 10 && (int)dAllLinks.size() != 0)
     {
         currentTopLink = findTopOneLink();
         dIt = dAllLinks.find(currentTopLink);
+        aPair.first = currentTopLink;
+        aPair.second = dIt->second;
         if (dIt->second == lastValueAdded)
         {
-            theTopTen[i-1].push_back(currentTopLink);
+            theTopTen[i-1].push_back(aPair);
         }
         else
         {
-            theTopTen[i].push_back(currentTopLink);
-            lastValueAdded = dIt->second;
+            theTopTen[i].push_back(aPair);
             i++;
         }
+
+        lastValueAdded = dIt->second;
         numberLinks++;
         dAllLinks.erase(currentTopLink);
     }
@@ -90,9 +88,11 @@ std::vector<std::vector<std::string>>& TopTen::findTopTenLinks()
     i--;
     currentTopLink = findTopOneLink();
     dIt = dAllLinks.find(currentTopLink);
-    while (dIt->second == lastValueAdded)
+    aPair.first = currentTopLink;
+    aPair.second = dIt->second;
+    while (dIt != dAllLinks.end() && dIt->second == lastValueAdded)
     {
-        theTopTen[i].push_back(currentTopLink);
+        theTopTen[i].push_back(aPair);
         dAllLinks.erase(currentTopLink);
         currentTopLink = findTopOneLink();
         dIt = dAllLinks.find(currentTopLink);
@@ -103,5 +103,6 @@ std::vector<std::vector<std::string>>& TopTen::findTopTenLinks()
 TopTen::TopTen()
     : Stats()
     {
+        //initie le vecteur à une longueur de 10
         theTopTen.resize(10);
     }

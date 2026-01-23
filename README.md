@@ -1,2 +1,2 @@
 # LogAnalyzer
-Yet another 3rd year c++ ptoject
+Yet another 3rd year c++ project at INSA lyon
