@@ -44,6 +44,6 @@ void Graph::graphiz(std::string const &outfile)
             fic<<"\""<<pair.first<<"\"" <<" -> \""<<pair2.first<<"\"[label=\""<<pair2.second<<"\"];"<<std::endl;
         }
     }
-    fic<<"}"<<std::endl;
+    fic<<"}"<<std::endl; 
 
 }

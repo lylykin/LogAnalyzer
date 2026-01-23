@@ -13,7 +13,6 @@ void TopTen::printTopTen() const
         for (const pairSi& aPair : linksVect)
         {
             std::cout << aPair.first << "( " << aPair.second  << " hits)" << std::endl;
-            i++;
         }
     }
 }
