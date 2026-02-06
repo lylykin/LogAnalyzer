@@ -38,6 +38,10 @@ OFILES = $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(CXXFILES))
 OUTPUT = build/$(PROJECT_NAME)
 
 
+analog: $(OUTPUT)
+	@cp $(OUTPUT) analog
+
+
 $(OUTPUT): $(OFILES)
 	@$(MKCWD)
 	@echo " LD  [ $@ ] $<"
@@ -51,7 +55,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 run: $(OUTPUT)
 	@$(OUTPUT)
 
-all: $(OUTPUT)
+all: $(OUTPUT) analog
 
 clean:
 	@rm -rf build/
