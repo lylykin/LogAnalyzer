@@ -1,0 +1,7 @@
+192.168.0.0 - - [08/Sep/2012:11:16:02 +0200] "GET /temps/4IF16.html HTTP/1.1" 200 12106 "http://intranet-if.insa-lyon.fr/temps/4IF15.html" "Mozilla/5.0 Firefox/14.0.1"
+192.168.0.0 - - [08/Sep/2012:11:16:05 +0200] "GET /temps/4IF17.html HTTP/1.1" 200 5189 "http://intranet-if.insa-lyon.fr/temps/4IF16.html" "Mozilla/5.0 Firefox/14.0.1"
+192.168.0.2 - - [08/Sep/2012:11:16:51 +0200] "GET /temps/style_emploi_du_temps.css HTTP/1.1" 200 1216 "http://intranet-if.insa-lyon.fr/temps/" "Mozilla/5.0 Firefox/15.0.1"
+192.168.0.2 - - [08/Sep/2012:11:16:51 +0200] "GET /temps/InsaIF.ico HTTP/1.1" 200 766 "-" "Mozilla/5.0 Firefox/15.0.1"
+192.168.0.2 - - [08/Sep/2012:11:16:51 +0200] "GET /temps/FondInsa.jpg HTTP/1.1" 200 2828 "http://intranet-if.insa-lyon.fr/temps/" "Mozilla/5.0 Firefox/15.0.1"
+192.168.0.3 - - [08/Sep/2012:11:17:00 +0200] "GET /temps/script.js HTTP/1.1" 200 500 "http://intranet-if.insa-lyon.fr/temps/" "Mozilla/5.0 Firefox/15.0.1"
+192.168.0.3 - - [08/Sep/2012:11:17:01 +0200] "GET /temps/image.png HTTP/1.1" 200 1000 "http://intranet-if.insa-lyon.fr/temps/" "Mozilla/5.0 Firefox/15.0.1"

@@ -1,0 +1,1 @@
+../../build/log-analyzer -t 11 ../small.log

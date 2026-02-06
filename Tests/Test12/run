@@ -1,0 +1,1 @@
+../../build/log-analyzer -e -g sortie_graph.dot ../exclude.log

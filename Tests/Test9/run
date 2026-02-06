@@ -1,0 +1,1 @@
+../../build/log-analyzer -t 14 -g sortie_graph.dot ../small.log
