@@ -1,23 +1,40 @@
+/*************************************************************************
+                           TopTen  -  Classe de statistiques Top 10
+                             -------------------
+    début                : 2025
+    copyright            : (C) 2025 par Équipe LogAnalyzer
+    e-mail               : equipe@loganalyzer.fr
+*************************************************************************/
+
+//---------- Réalisation de la classe <TopTen> (fichier topten.cpp) ------
+
+//---------------------------------------------------------------- INCLUDE
+
+//-------------------------------------------------------- Include système
 #include <string>
 #include <map>
 #include <vector>
 #include <iostream>
 
+//------------------------------------------------------ Include personnel
 #include "topten.hpp"
 #include "parser.hpp"
 
-void TopTen::printTopTen() const
+//----------------------------------------------------------------- PUBLIC
+
+//----------------------------------------------------- Méthodes publiques
+void TopTen::PrintTopTen() const
 {
     for (const std::vector<pairSi>& linksVect : theTopTen)
     {
         for (const pairSi& aPair : linksVect)
         {
-            std::cout << aPair.first << "( " << aPair.second  << " hits)" << std::endl;
+            std::cout << aPair.first << " (" << aPair.second  << " hits)" << std::endl;
         }
     }
 }
 
-void TopTen::printAllLinks() const
+void TopTen::PrintAllLinks() const
 {
     for (auto& pair : dAllLinks)
     {
@@ -25,7 +42,7 @@ void TopTen::printAllLinks() const
     }
 }
 
-void TopTen::interpret(Parser::LogLine const & line)
+void TopTen::Interpret(Parser::LogLine const & line)
 {
     std::string target(line.target);
     dict::iterator it = dAllLinks.find(target);
@@ -39,7 +56,7 @@ void TopTen::interpret(Parser::LogLine const & line)
     }
 }
 
-std::string TopTen::findTopOneLink()
+std::string TopTen::FindTopOneLink()
 {
     int max = 0;
     std::string topLink("");
@@ -54,7 +71,7 @@ std::string TopTen::findTopOneLink()
     return topLink;
 }
 
-tabLinks& TopTen::findTopTenLinks()
+tabLinks& TopTen::FindTopTenLinks()
 {
     std::string currentTopLink;
     dict::iterator dIt;
@@ -64,7 +81,7 @@ tabLinks& TopTen::findTopTenLinks()
     int i = 0;
     while (numberLinks < 10 && (int)dAllLinks.size() != 0)
     {
-        currentTopLink = findTopOneLink();
+        currentTopLink = FindTopOneLink();
         dIt = dAllLinks.find(currentTopLink);
         aPair.first = currentTopLink;
         aPair.second = dIt->second;
@@ -84,24 +101,40 @@ tabLinks& TopTen::findTopTenLinks()
     }
 
     //on vérifie qu'il n'y a pas d'autres liens au delà du top 10 qui ont le même nombre de visites que le top 10
-    i--;
-    currentTopLink = findTopOneLink();
-    dIt = dAllLinks.find(currentTopLink);
-    aPair.first = currentTopLink;
-    aPair.second = dIt->second;
-    while (dIt != dAllLinks.end() && dIt->second == lastValueAdded)
+    if (i > 0)
     {
-        theTopTen[i].push_back(aPair);
-        dAllLinks.erase(currentTopLink);
-        currentTopLink = findTopOneLink();
+        i--;
+        currentTopLink = FindTopOneLink();
         dIt = dAllLinks.find(currentTopLink);
+        aPair.first = currentTopLink;
+        if (dIt != dAllLinks.end())
+        {
+            aPair.second = dIt->second;
+            while (dIt != dAllLinks.end() && dIt->second == lastValueAdded)
+            {
+                theTopTen[i].push_back(aPair);
+                dAllLinks.erase(currentTopLink);
+                currentTopLink = FindTopOneLink();
+                dIt = dAllLinks.find(currentTopLink);
+            }
+        }
     }
     return theTopTen;
 }
 
-TopTen::TopTen()
-    : Stats()
-    {
-        //initie le vecteur à une longueur de 10
-        theTopTen.resize(10);
-    }
+//-------------------------------------------- Constructeurs - destructeur
+TopTen::TopTen() : Stats()
+{
+#ifdef MAP
+    std::cout << "Appel au constructeur de <TopTen>" << std::endl;
+#endif
+    //initie le vecteur à une longueur de 10
+    theTopTen.resize(10);
+}
+
+TopTen::~TopTen()
+{
+#ifdef MAP
+    std::cout << "Appel au destructeur de <TopTen>" << std::endl;
+#endif
+}

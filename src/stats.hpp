@@ -1,51 +1,55 @@
-#ifndef STATS_H
+/*************************************************************************
+                           Stats  -  Classe de base pour l'analyse
+                             -------------------
+    début                : 2025
+    copyright            : (C) 2025 par Équipe LogAnalyzer
+    e-mail               : equipe@loganalyzer.fr
+*************************************************************************/
+
+//---------- Interface de la classe <Stats> (fichier stats.hpp) ----------
+#if ! defined ( STATS_H )
 #define STATS_H
 
-#include <fstream>
-#include <iostream>
+//--------------------------------------------------- Interfaces utilisées
+#include <string>
 #include <optional>
+
+//------------------------------------------------------ Include personnel
 #include "parser.hpp"
+
+//------------------------------------------------------------------------
+// Rôle de la classe <Stats>
+// Classe de base abstraite (ou concrète utilisable) pour l'analyse
+// de fichiers de logs. Définit le protocole d'interprétation.
+//------------------------------------------------------------------------
 
 class Stats
 {
+//----------------------------------------------------------------- PUBLIC
+
 public:
-    virtual void interpret(Parser::LogLine const & _)
-    {
-        std::cout << " IP: " << (int)_.ip[0] << "." << (int)_.ip[1] << "." << (int)_.ip[2] << "."
-                  << (int)_.ip[3] << std::endl;
-        std::cout << " Time: " << std::asctime(&_.time);
-        std::cout << " Request: " << _.request << std::endl;
-        if (_.request == "GET")
-        {
-            std::cout << "  Source: " << _.source << std::endl;
-            std::cout << "  Target: " << _.target << std::endl;
-        }
-    }
+//----------------------------------------------------- Méthodes publiques
+    virtual void Interpret(Parser::LogLine const & line);
+    // Mode d'emploi :
+    // Méthode virtuelle appelée pour chaque ligne de log parsée.
+    // L'implémentation par défaut affiche le contenu de la ligne.
 
-    // constructeurs/destructeurs   - - - - - - - - - - - - - - - - - -
-    Stats(){};
-    virtual ~Stats() {};
+    // line doit être une structure valide.
 
-    bool interpret_file(std::string const &path, bool exclude_documents, std::optional<int> time_selection)
-    {
-        std::ifstream file(path);
-        if (!file)
-        {
-            std::cerr << "Erreur d'ouverture du fichier : " << path << std::endl;
-            return false;
-        }
+    bool InterpretFile(std::string const &path, bool exclude_documents, std::optional<int> time_selection);
+    // Mode d'emploi :
+    // Ouvre le fichier et lance l'interprétation ligne par ligne
+    // Contrat : 
+    // Le chemin doit être accessible en lecture
 
-        Parser parser(file, exclude_documents, time_selection);
-        while (file)
-        {
-            std::optional<Parser::LogLine> line = parser.getLine();
-            if (line.has_value())
-            {
-                interpret(line.value());
-            }
-        }
-        return true;
-    }
+//-------------------------------------------- Constructeurs - destructeur
+    Stats();
+    // Mode d'emploi :
+    // constructeurs
+    
+    virtual ~Stats();
+    // Mode d'emploi :
+    // destructeurs
 };
 
-#endif
+#endif // STATS_H

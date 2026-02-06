@@ -1,31 +1,61 @@
-#if ! defined GRAPH_HPP
+/*************************************************************************
+                           Graph  -  Génération de graphes (GraphViz)
+                             -------------------
+    début                : 2025
+    copyright            : (C) 2025 par Équipe LogAnalyzer
+    e-mail               : equipe@loganalyzer.fr
+*************************************************************************/
+
+//---------- Interface de la classe <Graph> (fichier graph.hpp) ----------
+#if ! defined ( GRAPH_HPP )
 #define GRAPH_HPP
 
-#include "parser.hpp"
-#include "stats.hpp"
+//--------------------------------------------------- Interfaces utilisées
 #include <map>
 #include <string>
 
+//------------------------------------------------------ Include personnel
+#include "parser.hpp"
+#include "stats.hpp"
+
+//------------------------------------------------------------------------
+// Rôle de la classe <Graph>
+// Modélise les transitions entre pages (Source -> Cible) et
+// génère un fichier exportable pour GraphViz (.dot).
+//------------------------------------------------------------------------
+
 class Graph : public Stats
 {
-    public:
-        
-        //Récupère les données du fichier de log et le convertit en fichier GraphViz
-        void interpret(Parser::LogLine const &is);
-        
-        //Génére le fichier GraphViz
-        void graphiz(const std::string &);
-        
-        //Constructeur par défaut
-        Graph();
-        
-        //Constructeur de copie
-        Graph(const Graph &unGraph);
+//----------------------------------------------------------------- PUBLIC
 
+public:
+//----------------------------------------------------- Méthodes publiques
+    void Interpret(Parser::LogLine const &is) override;
+    // Mode d'emploi :
+    // Récupère les données du fichier de log et le convertit en fichier GraphViz
     
-    protected:
-        std::map<std::string, std::map<std::string, int>> mygraph;
-        
+    void Graphiz(const std::string &);
+    // Mode d'emploi :
+    // Génére le fichier GraphViz
+
+//-------------------------------------------- Constructeurs - destructeur
+    Graph();
+    // Mode d'emploi :
+    // Constructeur par défaut
+    
+    Graph(const Graph &unGraph);
+    // Mode d'emploi :
+    // Constructeur de copie
+    
+    virtual ~Graph();
+    // Mode d'emploi :
+    // Destructeur
+
+//------------------------------------------------------------------ PRIVE
+
+protected:
+//----------------------------------------------------- Attributs protégés
+    std::map<std::string, std::map<std::string, int>> mygraph;
 };
 
-#endif
+#endif // GRAPH_HPP
