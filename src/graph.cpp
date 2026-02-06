@@ -2,8 +2,7 @@
                            Graph  -  Génération de graphes (GraphViz)
                              -------------------
     début                : 2025
-    copyright            : (C) 2025 par Équipe LogAnalyzer
-    e-mail               : equipe@loganalyzer.fr
+    copyright            : (C) 2025 GNU GPL 3.0  
 *************************************************************************/
 
 //---------- Réalisation de la classe <Graph> (fichier graph.cpp) --------

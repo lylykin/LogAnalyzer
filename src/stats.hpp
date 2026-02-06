@@ -2,8 +2,7 @@
                            Stats  -  Classe de base pour l'analyse
                              -------------------
     début                : 2025
-    copyright            : (C) 2025 par Équipe LogAnalyzer
-    e-mail               : equipe@loganalyzer.fr
+    copyright            : (C) 2025 GNU GPL 3.0
 *************************************************************************/
 
 //---------- Interface de la classe <Stats> (fichier stats.hpp) ----------

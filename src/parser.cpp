@@ -2,20 +2,19 @@
                            Parser  -  Analyseur syntaxique de logs
                              -------------------
     début                : 2025
-    copyright            : (C) 2025 par Équipe LogAnalyzer
-    e-mail               : equipe@loganalyzer.fr
+    copyright            : (C) 2025 GNU GPL 3.0  
 *************************************************************************/
 
-//---------- Réalisation de la classe <Parser> (fichier parser.cpp) ------
+
+
+
+    //---------- Réalisation de la classe <Parser> (fichier parser.cpp) ------
 
 //---------------------------------------------------------------- INCLUDE
 
 //-------------------------------------------------------- Include système
-#include <chrono>
-#include <iomanip>
 #include <ios>
 #include <iostream>
-#include <vector>
 
 //------------------------------------------------------ Include personnel
 #include "parser.hpp"

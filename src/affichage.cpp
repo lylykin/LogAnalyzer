@@ -2,8 +2,7 @@
                            Affichage  -  Gestion des arguments
                              -------------------
     début                : 2025
-    copyright            : (C) 2025 par Équipe LogAnalyzer
-    e-mail               : equipe@loganalyzer.fr
+    copyright            : (C) 2025 GNU GPL 3.0  
 *************************************************************************/
 
 //---------- Réalisation du module <Affichage> (fichier affichage.cpp) ---
